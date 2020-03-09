@@ -8,5 +8,5 @@ Compiling Java classes is as simple as this:
 // TBD add the code
 ```
 
-**Note**: Please make sure you use JDK in your runtime
+**Note**: This project needs the full JDK as runtime-dependency to work properly (the JRE does not contain the JavaCompiler API).
 
