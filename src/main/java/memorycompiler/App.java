@@ -5,27 +5,28 @@ package memorycompiler;
 
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
-import org.mdkt.compiler.InMemoryJavaCompiler;
+import eu.mihosoft.jcompiler.CompiledClass;
+import eu.mihosoft.jcompiler.JCompiler;
 
 public class App {
 
     public static void main(String[] args) throws Exception {
 
-        InMemoryJavaCompiler compiler = InMemoryJavaCompiler.newInstance();
+        JCompiler compiler = JCompiler.newInstance();
 
-        compiler.addSource("MyClass", "public interface MyClass {}; interface MyClass2 {}");
-        compiler.addSource("mcl2", "interface MyClass3 {}; interface MyClass4 {}");
+        compiler.addSource("MyClass1", "public interface MyClass1 {}; interface MyClass2 {}");
+        compiler.addSource("MyClass3", "interface MyClass3 {}; interface MyClass4 {}");
 
-        Map<String, List<Class<?>>> modelClasses;
-        // modelClasses = 
-        compiler.compileAll();
-        // List<Class<?>> classes = modelClasses.values().stream().flatMap(cls->cls.stream()).collect(Collectors.toList());
+        Map<String, List<CompiledClass>> modelClasses = compiler.compileAll();
 
-        // for(Class<?> cls : classes) {
-        //     System.out.println("> out: " + cls.getName());
-        // }
+        for(String compilationUnit : modelClasses.keySet()) {
+            System.out.println("> compilation unit: " + compilationUnit);
+            List<CompiledClass> classes = modelClasses.get(compilationUnit);
+            for(CompiledClass cls : classes) {
+                System.out.println("> out: " + cls.loadClass().getName());
+            }
+        }
 
     }
 }

@@ -1,4 +1,4 @@
-package org.mdkt.compiler;
+package eu.mihosoft.jcompiler;
 
 import java.io.IOException;
 import java.util.ArrayList;

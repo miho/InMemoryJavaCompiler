@@ -1,5 +1,8 @@
-package org.mdkt.compiler;
+package eu.mihosoft.jcompiler;
 
+/**
+ * Indicates a compilation error.
+ */
 public class CompilationException extends RuntimeException {
 	private static final long serialVersionUID = 5272588827551900536L;
 

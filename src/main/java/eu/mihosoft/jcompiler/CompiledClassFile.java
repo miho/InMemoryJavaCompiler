@@ -1,4 +1,4 @@
-package org.mdkt.compiler;
+package eu.mihosoft.jcompiler;
 
 import javax.tools.SimpleJavaFileObject;
 import java.io.ByteArrayOutputStream;

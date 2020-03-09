@@ -1,4 +1,4 @@
-package org.mdkt.compiler;
+package eu.mihosoft.jcompiler;
 
 /**
  * Represents a compiled class. A compiled class can be returned as byte array as well as class object, loaded by the classloader used during compilation.

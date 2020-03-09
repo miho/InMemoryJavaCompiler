@@ -1,14 +1,13 @@
-package org.mdkt.compiler;
+package eu.mihosoft.jcompiler;
 
 import java.net.URISyntaxException;
 import java.util.*;
-
 import javax.tools.*;
 
 /**
  * In-memory compiler for Java code.
  */
-public final class InMemoryJavaCompiler {
+public final class JCompiler {
 	
 	private final JavaCompiler javac;
 	private DynamicClassLoader classLoader;
@@ -22,14 +21,14 @@ public final class InMemoryJavaCompiler {
 	 * 
 	 * @return a new instance of this class
 	 */
-	public static InMemoryJavaCompiler newInstance() {
-		return new InMemoryJavaCompiler();
+	public static JCompiler newInstance() {
+		return new JCompiler();
 	}
 
 	/**
 	 * Creates a new instance of this class.
 	 */
-	private InMemoryJavaCompiler() {
+	private JCompiler() {
 		this.javac = ToolProvider.getSystemJavaCompiler();
 		this.classLoader = new DynamicClassLoader(ClassLoader.getSystemClassLoader());
 	}
@@ -40,7 +39,7 @@ public final class InMemoryJavaCompiler {
 	 * @param parentClassLoader parent classloader to be used during compilation/class loading
 	 * @return this instance (for chaining multiple configuration commands)
 	 */
-	public InMemoryJavaCompiler useParentClassLoader(ClassLoader parent) {
+	public JCompiler useParentClassLoader(ClassLoader parent) {
 		this.classLoader = new DynamicClassLoader(parent);
 		return this;
 	}
@@ -55,25 +54,20 @@ public final class InMemoryJavaCompiler {
 	}
 
 	/**
-	 * Specifies options to be used by the compiler, e.g. '-Xlint:unchecked'.
+	 * Specifies the options to be used by the compiler, e.g. '-Xlint:unchecked'.
 	 *
 	 * @param options compiler options
-	 * @return this instance (for chaining multiple configuration commands)
 	 */
-	public InMemoryJavaCompiler useOptions(String... options) {
+	public void setOptions(String... options) {
 		this.options = Arrays.asList(options);
-		return this;
 	}
 
 	/**
-	 * Specifies that the default diagnostocs listener should ignore non-critical compiler output, like unchecked/unsafe operation
+	 * Specifies whether the default diagnostocs listener should ignore non-critical compiler output, like unchecked/unsafe operation
 	 * warnings (only applies to default diagnostics listener).
-	 *
-	 * @return this instance (for chaining multiple configuration commands)
 	 */
-	public InMemoryJavaCompiler ignoreWarnings() {
-		ignoreWarnings = true;
-		return this;
+	public void setIgnoreWarnings(boolean ignoreWarnings) {
+		this.ignoreWarnings = ignoreWarnings;
 	}
 
 	/**
@@ -82,7 +76,7 @@ public final class InMemoryJavaCompiler {
 	 * @return Map containing instances of all compiled classes
 	 * @throws CompilationException if an error occurs during compilation
 	 */
-	public  Map<String, List<CompiledClass>> compileAll() throws CompilationException {
+	public Map<String, List<CompiledClass>> compileAll() throws CompilationException {
 		return compileAll(null);
 	}
 
@@ -92,7 +86,7 @@ public final class InMemoryJavaCompiler {
 	 * 
 	 * @param diagnosticListener a custom diagnostocs listener (may be null)
 	 * @return Map containing compile code, grouped by compilation unit
-	 * @throws CompilationException if an error occurs during compilation
+	 * @throws CompilationException if an error occurs during compilation (only thrown if default diagnostics listener is used)
 	 */
 	public Map<String, List<CompiledClass>> compileAll(DiagnosticListener<JavaFileObject> diagnosticListener) throws CompilationException {
 		if (sourceCodes.size() == 0) {
@@ -169,7 +163,7 @@ public final class InMemoryJavaCompiler {
 	 * @return this instance (for chaining invocation of this method)
 	 * @see {@link #compileAll()}
 	 */
-	public InMemoryJavaCompiler addSource(String compilationUnitName, String sourceCode) {
+	public JCompiler addSource(String compilationUnitName, String sourceCode) {
 		try {
 		sourceCodes.put(compilationUnitName, new CompilationUnitSource(compilationUnitName, sourceCode));
 		} catch(URISyntaxException ex) {
