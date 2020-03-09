@@ -1,7 +1,13 @@
-.idea
-InMemoryJavaCompiler.iml
-target
-release.properties*
+# Ignore Gradle project-specific cache directory
+.gradle
+
+# Ignore Gradle build output directory
+build/
+bin/
+
 .settings
-.classpath
 .project
+.classpath
+.vscode
+.idea
+.eclipse

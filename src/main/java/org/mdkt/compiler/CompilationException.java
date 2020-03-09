@@ -7,4 +7,8 @@ public class CompilationException extends RuntimeException {
 		super(msg);
 	}
 
+	public CompilationException(String msg, Exception ex) {
+		super(msg, ex);
+	}
+
 }

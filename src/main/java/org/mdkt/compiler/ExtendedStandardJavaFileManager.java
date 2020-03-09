@@ -1,10 +1,11 @@
 package org.mdkt.compiler;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.tools.FileObject;
 import javax.tools.ForwardingJavaFileManager;
@@ -14,11 +15,15 @@ import javax.tools.JavaFileObject;
 /**
  * Created by trung on 5/3/15. Edited by turpid-monkey on 9/25/15, completed
  * support for multiple compile units.
+ * 
+ * Edited by miho on March 9, 2020. Support for multiple compile units improved.
  */
-public class ExtendedStandardJavaFileManager extends
+/*pkg private */final class ExtendedStandardJavaFileManager extends
 		ForwardingJavaFileManager<JavaFileManager> {
 
-	private List<CompiledCode> compiledCode = new ArrayList<CompiledCode>();
+	private final Map<String, List<CompiledClass>> compiledCode = new HashMap<>();
+	private final Map<String, List<CompiledClass>> compiledCodeUnmodifiable = Collections.unmodifiableMap(compiledCode);
+
 	private DynamicClassLoader cl;
 
 	/**
@@ -26,7 +31,7 @@ public class ExtendedStandardJavaFileManager extends
 	 *
 	 * @param fileManager
 	 *            delegate to this file manager
-	 * @param cl
+	 * @param cl classloader to use for compile code
 	 */
 	protected ExtendedStandardJavaFileManager(JavaFileManager fileManager,
 			DynamicClassLoader cl) {
@@ -40,10 +45,18 @@ public class ExtendedStandardJavaFileManager extends
 			JavaFileObject.Kind kind, FileObject sibling) throws IOException {
 
 		try {
-			CompiledCode innerClass = new CompiledCode(className);
-			compiledCode.add(innerClass);
-			cl.addCode(innerClass);
-			return innerClass;
+			CompiledClassFile containedClass = new CompiledClassFile(cl, className);
+
+			String fName = sibling.getName();
+
+			List<CompiledClass> codeList = compiledCode.get(fName);
+			if(codeList ==null) {
+				codeList = new ArrayList<>();
+				compiledCode.put(fName, codeList);
+			}
+			codeList.add(new CompiledClass(containedClass));
+			cl.addCode(containedClass);
+			return containedClass;
 		} catch (Exception e) {
 			throw new RuntimeException(
 					"Error while creating in-memory output file for "
@@ -55,4 +68,12 @@ public class ExtendedStandardJavaFileManager extends
 	public ClassLoader getClassLoader(JavaFileManager.Location location) {
 		return cl;
 	}
+
+	/**
+	 * @return the compiled code by compilation unit
+	 */
+	Map<String, List<CompiledClass>> getCompiledCode() {
+		return compiledCodeUnmodifiable;
+	}
+
 }

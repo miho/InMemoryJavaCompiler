@@ -3,15 +3,16 @@ package org.mdkt.compiler;
 import javax.tools.SimpleJavaFileObject;
 import java.io.IOException;
 import java.net.URI;
+import java.net.URISyntaxException;
 
 /**
- * Created by trung on 5/3/15.
+ * Represents source code of a compilation unit.
  */
-public class SourceCode extends SimpleJavaFileObject {
+/*pkg private*/ final class CompilationUnitSource extends SimpleJavaFileObject {
 	private String contents = null;
 	private String className;
 
-	public SourceCode(String className, String contents) throws Exception {
+	public CompilationUnitSource(String className, String contents) throws URISyntaxException {
 		super(URI.create("string:///" + className.replace('.', '/')
 				+ Kind.SOURCE.extension), Kind.SOURCE);
 		this.contents = contents;
