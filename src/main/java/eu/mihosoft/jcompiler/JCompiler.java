@@ -9,10 +9,14 @@ import javax.tools.*;
  */
 public final class JCompiler {
 	
+	// instance to the java compiler instance
 	private final JavaCompiler javac;
-	private DynamicClassLoader classLoader;
+	// classloader used to load compiled compilation units/classes
+	private InMemoryClassLoader classLoader;
+	// compiler options
 	private Iterable<String> options;
 
+	// source code map (compilation units by name)
 	private final Map<String, CompilationUnitSource> sourceCodes 
 		= new HashMap<String, CompilationUnitSource>();
 
@@ -30,7 +34,7 @@ public final class JCompiler {
 	 */
 	private JCompiler() {
 		this.javac = ToolProvider.getSystemJavaCompiler();
-		this.classLoader = new DynamicClassLoader(ClassLoader.getSystemClassLoader());
+		this.classLoader = new InMemoryClassLoader(ClassLoader.getSystemClassLoader());
 	}
 
 	/**
@@ -40,7 +44,7 @@ public final class JCompiler {
 	 * @return this instance (for chaining multiple configuration commands)
 	 */
 	public JCompiler useParentClassLoader(ClassLoader parent) {
-		this.classLoader = new DynamicClassLoader(parent);
+		this.classLoader = new InMemoryClassLoader(parent);
 		return this;
 	}
 
@@ -54,9 +58,9 @@ public final class JCompiler {
 	}
 
 	/**
-	 * Specifies the options to be used by the compiler, e.g. '-Xlint:unchecked'.
+	 * Specifies the options to be used by the compiler, e.g. {@code -Xlint:unchecked}.
 	 *
-	 * @param options compiler options
+	 * @param options compiler options to be used during compilation
 	 */
 	public void setOptions(String... options) {
 		this.options = Arrays.asList(options);

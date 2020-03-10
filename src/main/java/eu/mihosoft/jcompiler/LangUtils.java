@@ -5,6 +5,7 @@ import java.util.regex.Pattern;
 
 
 /**
+ * Language utilities.
  * 
  * @author Michael Hoffer &lt;info@michaelhoffer.de&gt;
  */
@@ -258,9 +259,9 @@ import java.util.regex.Pattern;
 
         /**
          * Regular expression for a valid identifier (variable, class or method
-         * names).
+         * names). This is the unicode version of "[a-zA-Z$_][a-zA-Z$_0-9]*". 
+         * It does not exclude keywords. This should be checked separately.
          */
-        // public static final String IDENTIFIER_STRING = "[a-zA-Z$_][a-zA-Z$_0-9]*";
         public static final String IDENTIFIER_STRING = "[\\p{L}\\p{Pc}$][\\p{L}\\p{N}\\p{Pc}$]*";
 
         /**
@@ -269,12 +270,7 @@ import java.util.regex.Pattern;
         public static final String IDENTIFIER_LIST_STRING =
                 "(" + IDENTIFIER_STRING + "\\s*,\\s*)*"
                 + IDENTIFIER_STRING;
-        /**
-         * Regular expression for a valid template argument, e.g,
-         * <code>&lt;&lt;T,V&gt;&gt;</code>.
-         */
-        public static final String TEMPLATE_ARGUMENT_STRING =
-                "<<\\s*" + IDENTIFIER_LIST_STRING + "\\s*>>";
+
         /**
          * <p>Regular expression to match block-comments.</p> <p><b>Note:</b> does
          * also match block-comments inside strings! Thus, to work correctly strings
@@ -282,35 +278,7 @@ import java.util.regex.Pattern;
          */
         public static final String BLOCK_COMMENT_STRING =
                 "/\\*(?:.|[\\n\\r])*?\\*/";
-        /**
-         * Pattern to match template class headers. Example:
-         * <code>
-         * public class Sample01 &lt;&lt;Type, Type2&gt;&gt; extends Base01
-         * </code>
-         */
-        public static final Pattern TEMPLATE_CLS_HEADER = Pattern.compile(
-                "(\\s+|^|(\\s+|^)public\\s+|(\\s+|^)protected\\s+|(\\s+|^)"
-                + "private\\s+)(static\\s+|abstract\\s+|final\\s+|)class\\s+"
-                + IDENTIFIER_STRING
-                + "\\s*" + TEMPLATE_ARGUMENT_STRING
-                + "(\\s*extends\\s+" + IDENTIFIER_STRING + ")*"
-                + "(\\s+implements\\s+" + IDENTIFIER_LIST_STRING + ")*",
-                Pattern.MULTILINE);
-        /**
-         * Pattern to match template class. Example:
-         * <code>
-         * Sample01 &lt;&lt;Type, Type2&gt;&gt;
-         * </code>
-         */
-        public static final Pattern TEMPLATE_CLS = Pattern.compile(
-                "(class\\s+"+IDENTIFIER_STRING +"|" +IDENTIFIER_STRING
-                + ")\\s*" + TEMPLATE_ARGUMENT_STRING,
-                Pattern.MULTILINE);
-        /**
-         * Pattern to match template arguments, e.g.,
-         * <code>&lt;T,V&gt;</code>.
-         */
-        public static final Pattern TEMPLATE_ARGUMENT = Pattern.compile(TEMPLATE_ARGUMENT_STRING);
+
         /**
          * Pattern to match an identifier.
          */
@@ -335,10 +303,11 @@ import java.util.regex.Pattern;
         /**
          * Regular expression to match import definition.
          */
-    //    // \\b is stands for word boundary
+        // \\b is stands for word boundary
         public static final String IMPORT_DEFINITION_STRING =
                 "\\bimport\\b\\s+" + Patterns.PACKAGE_NAME_STRING
                 + "\\s*(;|\\.\\*\\s*;)";
+
         /**
          * Pattern to match import definition.
          */

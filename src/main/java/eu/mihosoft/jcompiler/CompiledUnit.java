@@ -1,6 +1,5 @@
 package eu.mihosoft.jcompiler;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 

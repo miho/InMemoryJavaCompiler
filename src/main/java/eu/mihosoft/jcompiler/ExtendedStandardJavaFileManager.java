@@ -25,9 +25,7 @@ import javax.tools.JavaFileObject;
 	private final List<CompiledUnit> compiledUnits = new ArrayList<>();
 	private final List<CompiledUnit> compiledUnitsUnmodifiable = 
 		Collections.unmodifiableList(compiledUnits);
-
-
-	private DynamicClassLoader cl;
+	private InMemoryClassLoader cl;
 
 	/**
 	 * Creates a new instance of ForwardingJavaFileManager.
@@ -37,7 +35,7 @@ import javax.tools.JavaFileObject;
 	 * @param cl classloader to use for compile code
 	 */
 	protected ExtendedStandardJavaFileManager(JavaFileManager fileManager,
-			DynamicClassLoader cl) {
+			InMemoryClassLoader cl) {
 		super(fileManager);
 		this.cl = cl;
 	}

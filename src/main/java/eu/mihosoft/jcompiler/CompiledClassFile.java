@@ -10,12 +10,18 @@ import java.net.URISyntaxException;
 /**
  * A compiled class.
  */
-public final class CompiledClassFile extends SimpleJavaFileObject {
+/*pkg private*/ final class CompiledClassFile extends SimpleJavaFileObject {
     private final ClassLoader loader;
     private final ByteArrayOutputStream baos = new ByteArrayOutputStream();
     private final String className;
     private Class<?> loadedClass;
 
+    /**
+     * Creates a new instance of this class.
+     * @param loader classloader to use
+     * @param className classname
+     * @throws URISyntaxException if the name is invalid
+     */
     /*pkg private*/ CompiledClassFile(ClassLoader loader, String className) throws URISyntaxException {
         super(new URI(className), Kind.CLASS);
         this.loader = loader;
@@ -36,13 +42,20 @@ public final class CompiledClassFile extends SimpleJavaFileObject {
     }
 
     /**
-     * Returns the 
-     * @return
+     * Returns the binary representation/byte-code of this compiled class.
+     * 
+     * @return the binary representation/byte-code of this compiled class
      */
     public byte[] getByteCode() {
         return baos.toByteArray();
     }
 
+    /**
+     * Loads this class with the classloader used during compilation.
+     * 
+     * @return a class object that represents this compiled class
+     * @throws ClassNotFoundException if classloading failed
+     */
     public Class<?> loadClass() throws ClassNotFoundException {
         if(this.loadedClass!=null) {
             return this.loadedClass;

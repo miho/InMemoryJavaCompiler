@@ -10,6 +10,10 @@ import java.util.Map;
 import javax.tools.Diagnostic;
 import javax.tools.JavaFileObject;
 
+/**
+ * Result of a compilation attempt. The result contains compiled compilation units as well as diagnostics
+ * provided by the compiler (including success, warnings and errors).
+ */
 public final class CompilationResult {
 
     private final List<CompiledUnit> compiledUnits;
@@ -20,6 +24,12 @@ public final class CompilationResult {
     private final String compilationErrorMsg;
     
 
+    /**
+     * Creates a new instance of this class.
+     * @param compiledUnits compiled compilation units
+     * @param diagnostics diagnostics collected during compilation
+     * @param compilationSucceeded determines if the compilation attempt was successful
+     */
     /*pkg private*/ CompilationResult(
          List<CompiledUnit> compiledUnits,
          List<Diagnostic<? extends JavaFileObject>> diagnostics, boolean compilationSucceeded) {
@@ -30,28 +40,32 @@ public final class CompilationResult {
     }
 
 	/**
-	 * Returns the compiled classes
+	 * Returns the compiled compilation units.
+     * @return list of compiled compilation units
 	 */
 	public List<CompiledUnit> getCompiledUnits() {
         return this.compiledUnits;
     }
 
 	/**
-	 * Determines if the compilation did succeed.
+	 * Determines if the compilation was successful.
+     * @return {@code true} if compilation was successful; {@code false} otherwise
 	 */
 	public boolean compilationSucceeded() {
         return this.compilationSucceeded;
     }
 
 	/**
-	 * Determines if any warnings are present.
+	 * Determines if the compiler produced any warnings during the compilation attempt.
+     * @return {@code true} if warnings are present; {@code false} otherwise
 	 */
 	public boolean hasWarnings() {
         return this.hasWarnings;
     }
 
 	/**
-	 * Determines if any errors are presents.
+	 * Determines if the compiler produced any errors during the compilation attempt.
+     * @return {@code true} if errors are present; {@code false} otherwise
 	 */
 	public boolean hasErrors() {
         return this.hasErrors;
@@ -59,6 +73,7 @@ public final class CompilationResult {
 
 	/**
 	 * Returns the diagnostics produced by the compiler.
+     * @return list of diagnostics produced by the compiler
 	 */
 	public List<Diagnostic<? extends JavaFileObject>> getDiagnostics() {
         return diagnostics;
@@ -94,6 +109,10 @@ public final class CompilationResult {
         return checkNoErrors(true);
     }
 
+    /**
+     * Checks this result for warnings and errors.
+     * @return human readable version of the diagnostics (e.g. warnings and errors)
+     */
     private String checkWarningsAndErrors() {
 
         StringBuilder exceptionMsg = new StringBuilder();

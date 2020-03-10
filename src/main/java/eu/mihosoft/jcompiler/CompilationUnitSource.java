@@ -12,18 +12,29 @@ import java.net.URISyntaxException;
 	private String contents = null;
 	private String className;
 
-	public CompilationUnitSource(String className, String contents) throws URISyntaxException {
+	/**
+	 * Creates a new instance of this class.
+	 * @param className classname
+	 * @param contents code of this compilation unit
+	 * @throws URISyntaxException if the classname is invalid
+	 */
+	/*pkg private*/ CompilationUnitSource(String className, String contents) throws URISyntaxException {
 		super(URI.create("string:///" + className.replace('.', '/')
 				+ Kind.SOURCE.extension), Kind.SOURCE);
 		this.contents = contents;
 		this.className = className;
 	}
 
+	/**
+	 * Returns the name of this class.
+	 * @return the name of this class
+	 */
 	public String getClassName() {
 		return className;
 	}
 
-	public CharSequence getCharContent(boolean ignoreEncodingErrors)
+	@Override
+	public String getCharContent(boolean ignoreEncodingErrors)
 			throws IOException {
 		return contents;
 	}

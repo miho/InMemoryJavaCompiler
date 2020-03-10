@@ -1,10 +1,12 @@
 package eu.mihosoft.jcompiler;
 
 /**
- * Represents a compiled class. A compiled class can be returned as byte array as well as class object, loaded by the classloader used during compilation.
+ * Represents a compiled class. A compiled class can be returned as byte array as well as class object,
+ * loaded by the classloader used during compilation.
  */
 public final class CompiledClass {
 
+    // the internal representation of this compiled class
     private final CompiledClassFile file;
 
     /**
@@ -16,9 +18,9 @@ public final class CompiledClass {
     }
 
     /**
-     * Returns this class as binary by te code.
+     * Returns this class as binary byte code.
      * 
-     * @return the binary byte code of this class
+     * @return the byte code of this class
      */
     public byte[] getByteCode() {
         return file.getByteCode();
