@@ -9,6 +9,8 @@ plugins {
     id 'com.github.ben-manes.versions' version '0.13.0'
 }
 
+apply from: 'gradle/publishing.gradle'
+
 repositories {
     jcenter()
     mavenCentral()
@@ -54,5 +56,4 @@ license {
     ext.yearCurrent  = new SimpleDateFormat("yyyy").format(new Date())
     ext.years  = ('2020'.equals(ext.yearCurrent)?'':'2020-')+ext.yearCurrent
     ext.author1 = 'Michael Hoffer <info@michaelhoffer.de>'
-
 }
