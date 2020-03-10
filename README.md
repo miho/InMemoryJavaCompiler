@@ -3,7 +3,7 @@
 
 The purpose of this project is to provide a simple API for in-memory compilation of Java code. While the JDK provides a full-blown API for this, in many cases a much simpler API is sufficient.
 
-This project is based on abandoned code by [@trung](https://github.com/trung/InMemoryJavaCompiler).
+This project is based on abandoned code by [@trung](https://github.com/trung/InMemoryJavaCompiler) and reduced version of language utils from [VRL](https://github.com/VRL-Studio/VRL).
 
 ## Using JCompiler
 
