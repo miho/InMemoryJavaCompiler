@@ -22,7 +22,10 @@ import javax.tools.JavaFileObject;
 		ForwardingJavaFileManager<JavaFileManager> {
 
 	private final Map<String, List<CompiledClass>> compiledCode = new HashMap<>();
-	private final Map<String, List<CompiledClass>> compiledCodeUnmodifiable = Collections.unmodifiableMap(compiledCode);
+	private final List<CompiledUnit> compiledUnits = new ArrayList<>();
+	private final List<CompiledUnit> compiledUnitsUnmodifiable = 
+		Collections.unmodifiableList(compiledUnits);
+
 
 	private DynamicClassLoader cl;
 
@@ -53,6 +56,7 @@ import javax.tools.JavaFileObject;
 			if(codeList ==null) {
 				codeList = new ArrayList<>();
 				compiledCode.put(fName, codeList);
+				compiledUnits.add(new CompiledUnit(fName, codeList));
 			}
 			codeList.add(new CompiledClass(containedClass));
 			cl.addCode(containedClass);
@@ -70,10 +74,10 @@ import javax.tools.JavaFileObject;
 	}
 
 	/**
-	 * @return the compiled code by compilation unit
+	 * @return the compiled code as list of compiled units
 	 */
-	Map<String, List<CompiledClass>> getCompiledCode() {
-		return compiledCodeUnmodifiable;
+	List<CompiledUnit> getCompiledCode() {
+		return this.compiledUnitsUnmodifiable;
 	}
 
 }

@@ -14,6 +14,7 @@ public final class CompiledClassFile extends SimpleJavaFileObject {
     private final ClassLoader loader;
     private final ByteArrayOutputStream baos = new ByteArrayOutputStream();
     private final String className;
+    private Class<?> loadedClass;
 
     /*pkg private*/ CompiledClassFile(ClassLoader loader, String className) throws URISyntaxException {
         super(new URI(className), Kind.CLASS);
@@ -43,6 +44,20 @@ public final class CompiledClassFile extends SimpleJavaFileObject {
     }
 
     public Class<?> loadClass() throws ClassNotFoundException {
-        return loader.loadClass(className);
+        if(this.loadedClass!=null) {
+            return this.loadedClass;
+        }
+
+        this.loadedClass = loader.loadClass(className);
+
+        return this.loadedClass;
+    }
+
+    /*pkg private*/ boolean hasCachedClass() {
+        return this.loadedClass!= null;
+    }
+
+    /*pkg private*/ Class<?> getCachedClass() {
+        return this.loadedClass;
     }
 }

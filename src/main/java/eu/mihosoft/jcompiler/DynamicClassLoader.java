@@ -1,9 +1,6 @@
 package eu.mihosoft.jcompiler;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class DynamicClassLoader extends ClassLoader {
@@ -24,7 +21,24 @@ public class DynamicClassLoader extends ClassLoader {
 		if (cc == null) {
 			return super.findClass(name);
 		}
-		byte[] byteCode = cc.getByteCode();
-		return defineClass(name, byteCode, 0, byteCode.length);
+		if(cc.hasCachedClass()) {
+			return cc.getCachedClass();
+		} else {
+			byte[] byteCode = cc.getByteCode();
+			return defineClass(name, byteCode, 0, byteCode.length);
+		}
 	}
+
+	@Override
+	protected Class<?> loadClass(String name, boolean resolve) throws ClassNotFoundException {
+		CompiledClassFile cc = customCompiledCode.get(name);
+
+		if (cc != null) {
+			Class<?> cls = this.findClass(name);
+			return cls;
+		}
+
+		return super.loadClass(name, resolve);
+	}
+
 }

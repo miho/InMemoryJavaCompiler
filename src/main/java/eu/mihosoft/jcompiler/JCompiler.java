@@ -5,16 +5,16 @@ import java.util.*;
 import javax.tools.*;
 
 /**
- * In-memory compiler for Java code.
+ * Simple and efficient compiler API for Java code (defaults to in-memory compilation).
  */
 public final class JCompiler {
 	
 	private final JavaCompiler javac;
 	private DynamicClassLoader classLoader;
 	private Iterable<String> options;
-	boolean ignoreWarnings = false;
 
-	private final Map<String, CompilationUnitSource> sourceCodes = new HashMap<String, CompilationUnitSource>();
+	private final Map<String, CompilationUnitSource> sourceCodes 
+		= new HashMap<String, CompilationUnitSource>();
 
 	/**
 	 * Creates a new instance of this class.
@@ -63,39 +63,23 @@ public final class JCompiler {
 	}
 
 	/**
-	 * Specifies whether the default diagnostocs listener should ignore non-critical compiler output, like unchecked/unsafe operation
-	 * warnings (only applies to default diagnostics listener).
-	 */
-	public void setIgnoreWarnings(boolean ignoreWarnings) {
-		this.ignoreWarnings = ignoreWarnings;
-	}
-
-	/**
 	 * Compiles all sources added with {@link #addSource(String, String)}.
 	 *
 	 * @return Map containing instances of all compiled classes
 	 * @throws CompilationException if an error occurs during compilation
 	 */
-	public Map<String, List<CompiledClass>> compileAll() throws CompilationException {
-		return compileAll(null);
-	}
 
 	/**
-	 * Compiles all sources added with {@link #addSource(String, String)}. If the custom diagnostics listener is used, it is responsible for
-	 * throwing compilation exceptions if errors occur.
+	 * Compiles all sources added with {@link #addSource(String, String)}.
 	 * 
-	 * @param diagnosticListener a custom diagnostocs listener (may be null)
-	 * @return Map containing compile code, grouped by compilation unit
-	 * @throws CompilationException if an error occurs during compilation (only thrown if default diagnostics listener is used)
+	 * @return compilation result (compiled classes, warnings and errors)
 	 */
-	public Map<String, List<CompiledClass>> compileAll(DiagnosticListener<JavaFileObject> diagnosticListener) throws CompilationException {
+	public CompilationResult compileAll() {
 		if (sourceCodes.size() == 0) {
 			throw new CompilationException("No source code to compile");
 		}
 		Collection<CompilationUnitSource> compilationUnits = sourceCodes.values();
-		CompiledClassFile[] code;
-
-		code = new CompiledClassFile[compilationUnits.size()];
+		CompiledClassFile[] code = new CompiledClassFile[compilationUnits.size()];
 		Iterator<CompilationUnitSource> iter = compilationUnits.iterator();
 		for (int i = 0; i < code.length; i++) {
 			try{
@@ -107,51 +91,21 @@ public final class JCompiler {
 
 		DiagnosticCollector<JavaFileObject> collector = new DiagnosticCollector<>();
 		ExtendedStandardJavaFileManager fileManager = new ExtendedStandardJavaFileManager(javac.getStandardFileManager(null, null, null), classLoader);
-		JavaCompiler.CompilationTask task = javac.getTask(null, fileManager, diagnosticListener==null?collector:diagnosticListener, options, null, compilationUnits);
+		JavaCompiler.CompilationTask task = javac.getTask(null, fileManager, collector, options, null, compilationUnits);
 		boolean result = task.call();
-		if (!result || collector.getDiagnostics().size() > 0) {
-			StringBuilder exceptionMsg = new StringBuilder();
-			exceptionMsg.append("Unable to compile the source");
-			boolean hasWarnings = false;
-			boolean hasErrors = false;
-			for (Diagnostic<? extends JavaFileObject> d : collector.getDiagnostics()) {
-				switch (d.getKind()) {
-				case NOTE:
-				case MANDATORY_WARNING:
-				case WARNING:
-					hasWarnings = true;
-					break;
-				case OTHER:
-				case ERROR:
-				default:
-					hasErrors = true;
-					break;
-				}
-				exceptionMsg.append("\n").append("[location=").append(d.getSource().getName().substring(1));
-				exceptionMsg.append(", ").append("kind=").append(d.getKind());
-				exceptionMsg.append(", ").append("line=").append(d.getLineNumber());
-				exceptionMsg.append(", ").append("message=").append(d.getMessage(Locale.US)).append("]");
-			}
-			if (hasWarnings && !ignoreWarnings || hasErrors) {
-				throw new CompilationException(exceptionMsg.toString());
-			}
-			
-		}
 
-		return fileManager.getCompiledCode();
+		return new CompilationResult(fileManager.getCompiledCode(), collector.getDiagnostics(), result);
 	}
 
 	/**
 	 * Compiles a single source unit.
 	 *
-	 * @param compilationUnitName name of the compilation unit/file, used for
-	 *                            diagnostics
+	 * @param compilationUnitName name of the compilation unit/public class
 	 * @param sourceCode code to compile
-	 * @return
-	 * @throws CompilationException
+
 	 */
-	public List<CompiledClass> compile(String compilationUnitName, String sourceCode) throws CompilationException {
-		return addSource(compilationUnitName, sourceCode).compileAll().get(compilationUnitName);
+	public CompilationResult compile(String compilationUnitName, String sourceCode) throws CompilationException {
+		return addSource(compilationUnitName, sourceCode).compileAll();
 	}
 
 	/**

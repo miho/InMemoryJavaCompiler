@@ -3,10 +3,9 @@
  */
 package memorycompiler;
 
-import java.util.List;
-import java.util.Map;
-
+import eu.mihosoft.jcompiler.CompilationResult;
 import eu.mihosoft.jcompiler.CompiledClass;
+import eu.mihosoft.jcompiler.CompiledUnit;
 import eu.mihosoft.jcompiler.JCompiler;
 
 public class App {
@@ -18,12 +17,11 @@ public class App {
         compiler.addSource("MyClass1", "public interface MyClass1 {}; interface MyClass2 {}");
         compiler.addSource("MyClass3", "interface MyClass3 {}; interface MyClass4 {}");
 
-        Map<String, List<CompiledClass>> modelClasses = compiler.compileAll();
+        CompilationResult modelClasses = compiler.compileAll().checkNoErrors();
 
-        for(String compilationUnit : modelClasses.keySet()) {
-            System.out.println("> compilation unit: " + compilationUnit);
-            List<CompiledClass> classes = modelClasses.get(compilationUnit);
-            for(CompiledClass cls : classes) {
+        for(CompiledUnit compilationUnit : modelClasses.getCompiledUnits()) {
+            System.out.println("> compilation unit: " + compilationUnit.getName());
+            for(CompiledClass cls : compilationUnit.getClasses()) {
                 System.out.println("> out: " + cls.loadClass().getName());
             }
         }
