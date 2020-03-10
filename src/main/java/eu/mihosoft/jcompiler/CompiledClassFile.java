@@ -31,7 +31,6 @@ import java.net.URISyntaxException;
     private final ClassLoader loader;
     private final ByteArrayOutputStream baos = new ByteArrayOutputStream();
     private final String className;
-    private Class<?> loadedClass;
 
     /**
      * Creates a new instance of this class.
@@ -74,20 +73,7 @@ import java.net.URISyntaxException;
      * @throws ClassNotFoundException if classloading failed
      */
     public Class<?> loadClass() throws ClassNotFoundException {
-        if(this.loadedClass!=null) {
-            return this.loadedClass;
-        }
-
-        this.loadedClass = loader.loadClass(className);
-
-        return this.loadedClass;
+        return loader.loadClass(className);
     }
 
-    /*pkg private*/ boolean hasCachedClass() {
-        return this.loadedClass!= null;
-    }
-
-    /*pkg private*/ Class<?> getCachedClass() {
-        return this.loadedClass;
-    }
 }

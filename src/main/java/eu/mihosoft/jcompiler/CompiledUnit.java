@@ -17,6 +17,7 @@
  */
 package eu.mihosoft.jcompiler;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -62,7 +63,7 @@ public final class CompiledUnit {
 
         // at least one type has to be present in the file
         if(this.mainClass==null) {
-            throw new CompilationException("No type declaration found in '" + getName() + "'");
+            throw new CompilationException("Main type declaration '" + mainClassName + "' not found in '" + getName() + "'");
         }
 
         // get the class names in order of appearance
@@ -77,9 +78,26 @@ public final class CompiledUnit {
         // clear list
         this.classes.clear();
 
+        List<String> found = new ArrayList<>();
+
         // and rebuild it in correct order (appearance in file)
         for(String clsName : classNamesInOrder) {
-            this.classes.add(classesByName.get(clsName));
+            CompiledClass cc = classesByName.get(clsName);
+            // some classes can currently not be found via code analysis.
+            // they will be added later.
+            if(cc!=null) { 
+                this.classes.add(cc);
+                found.add(cc.getClassName());
+            }
+        }
+
+        for(CompiledClass cc : classesByName.values()) {
+            // if not previously added, add it now
+            if(!found.contains(cc.getClassName())) {
+                // names like Class$1$2 (internal non static classes) currently 
+                // cannot be found by code analysis
+                this.classes.add(cc);
+            }
         }
     }
 

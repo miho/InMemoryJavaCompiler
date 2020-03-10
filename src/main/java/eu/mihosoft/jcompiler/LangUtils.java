@@ -195,6 +195,35 @@ import java.util.regex.Pattern;
         return result.toString();
     }
 
+    private static String removeTypeBodyContent(String code) {
+
+        code = removeCommentsAndStringsFromCode(code);
+
+        StringBuilder result = new StringBuilder();
+
+            int depthCounter = 0;
+
+            for (int i = 0; i < code.length(); i++) {
+
+                char ch = code.charAt(i);
+
+                if (ch == '{') {
+                    depthCounter++;
+                }
+
+                // we print the character if we are not inside escape or inside char
+                if (depthCounter==0) {
+                    result.append(ch);
+                }
+
+                if(ch == '}') {
+                    depthCounter--;
+                }
+            }
+
+        return result.toString();
+    }
+
     /**
      * Removes comments, strings and chars from code, i.e.
      *
@@ -250,9 +279,11 @@ import java.util.regex.Pattern;
      */
     public static String getClassNameFromCode(String code) {
 
-        // remove comments, strings and chars from code
+        // remove coontents of class bodies, comments, strings and chars from code
         // -> remaining string can be safely matched with regex
-        code = removeCommentsAndStringsFromCode(code);
+        code = removeTypeBodyContent(code);
+
+        System.out.println("!!! " + code);
 
         String result = "";
 
