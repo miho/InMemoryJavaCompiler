@@ -32,7 +32,6 @@ public class InMemoryCompilerCompatibilityTest {
 
 	@Test
 	public void compileAll_WhenTypical() throws Exception {
-		System.out.println("!!!1");
 		String cls1 = "public class A{ public B b() { return new B(); }}";
 		String cls2 = "public class B{ public String toString() { return \"B!\"; }}";
 
@@ -44,7 +43,6 @@ public class InMemoryCompilerCompatibilityTest {
 		Class<?> aClass = compiled.get("A");
 		Object a = aClass.newInstance();
 		Assert.assertEquals("B!", aClass.getMethod("b").invoke(a).toString());
-		System.out.println("!!!2");
 	}
 
 	@Test

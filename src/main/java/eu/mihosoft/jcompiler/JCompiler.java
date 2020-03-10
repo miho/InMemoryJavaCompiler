@@ -100,11 +100,19 @@ public final class JCompiler {
 	}
 
 	/**
+	 * Compiles a single source unit. The name of the compilation unit is inferred from the code (at least one type declaration necessary).
+	 *
+	 * @param sourceCode code to compile
+	 */
+	public CompilationResult compile(String sourceCode) throws CompilationException {
+		return addSource(sourceCode).compileAll();
+	}
+
+	/**
 	 * Compiles a single source unit.
 	 *
 	 * @param compilationUnitName name of the compilation unit/public class
 	 * @param sourceCode code to compile
-
 	 */
 	public CompilationResult compile(String compilationUnitName, String sourceCode) throws CompilationException {
 		return addSource(compilationUnitName, sourceCode).compileAll();

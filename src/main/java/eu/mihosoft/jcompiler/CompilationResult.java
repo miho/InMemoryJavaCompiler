@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.tools.Diagnostic;
 import javax.tools.JavaFileObject;
@@ -133,7 +134,7 @@ public final class CompilationResult {
                 break;
             }
 
-            exceptionMsg.append("\n").append("[location=").append(d.getSource().getName());
+            exceptionMsg.append("\n").append("[location=").append(d.getSource()!=null?d.getSource().getName():"UNKNOWN");
             exceptionMsg.append(", ").append("kind=").append(d.getKind());
             exceptionMsg.append(", ").append("line=").append(d.getLineNumber());
             exceptionMsg.append(", ").append("message=").append(d.getMessage(Locale.US)).append("]");
@@ -141,4 +142,21 @@ public final class CompilationResult {
 
         return exceptionMsg.toString();
     }
+
+    /**
+     * Loads all classes obtained from this compilation attempt.
+     * @return all classes obtained from this compilation attempt by name
+     * @throws ClassNotFoundException if classloading failed
+     */
+    public Map<String,Class<?>> loadClasses() throws ClassNotFoundException {
+        Map<String, Class<?>> classesByName = new HashMap<>();
+
+        List<CompiledClass> classes = compiledUnits.stream().flatMap(cu->cu.getClasses().stream()).collect(Collectors.toList());
+
+        for(CompiledClass cc : classes) {
+            classesByName.put(cc.getClassName(), cc.loadClass());
+        }
+
+        return classesByName;
+    } 
 }
