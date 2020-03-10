@@ -14,8 +14,8 @@ public class App {
 
         JCompiler compiler = JCompiler.newInstance();
 
-        compiler.addSource("MyClass1", "public interface MyClass1 {}; interface MyClass2 {}");
-        compiler.addSource("MyClass3", "interface MyClass3 {}; interface MyClass4 {}");
+        compiler.addSource("public interface MyClass1 {} interface MyClass2 {}");
+        compiler.addSource("interface MyClass3 {} interface MyClass4 {}");
 
         CompilationResult modelClasses = compiler.compileAll().checkNoErrors();
 

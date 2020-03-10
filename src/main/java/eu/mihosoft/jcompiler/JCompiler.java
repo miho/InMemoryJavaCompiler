@@ -125,4 +125,21 @@ public final class JCompiler {
 		}
 		return this;
 	}
+
+	/**
+	 * Add source code to the compiler.
+	 *
+	 * @param sourceCode          code to compile
+	 * @return this instance (for chaining invocation of this method)
+	 * @see {@link #compileAll()}
+	 */
+	public JCompiler addSource(String sourceCode) {
+		try {
+			String compilationUnitName = LangUtils.getClassNameFromCode(sourceCode);
+			sourceCodes.put(compilationUnitName, new CompilationUnitSource(compilationUnitName, sourceCode));
+		} catch(URISyntaxException ex) {
+			throw new IllegalArgumentException("Invalid name specified", ex);
+		}
+		return this;
+	}
 }
