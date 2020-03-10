@@ -1,5 +1,5 @@
 # JCompiler 
-[ ![Download](https://api.bintray.com/packages/miho/JCompiler/JCompiler/images/download.svg) ](https://bintray.com/miho/JCompiler/JCompiler/_latestVersion) [![javadoc](https://javadoc.io/badge2/eu.mihosoft.jcompiler/jcompiler/javadoc.svg)](https://javadoc.io/doc/eu.mihosoft.jcompiler/jcompiler)
+[ ![Download](https://api.bintray.com/packages/miho/JCompiler/JCompiler/images/download.svg) ](https://bintray.com/miho/JCompiler/JCompiler/_latestVersion) [![javadoc](https://javadoc.io/badge2/eu.mihosoft.jcompiler/jcompiler/javadoc.svg)](https://javadoc.io/doc/eu.mihosoft.jcompiler/jcompiler) ![Java CI with Gradle](https://github.com/miho/JCompiler/workflows/Java%20CI%20with%20Gradle/badge.svg)
 
 The purpose of this project is to provide a simple API for in-memory compilation of Java code. While the JDK provides a full-blown API for this, in many cases a much simpler API is sufficient.
 
