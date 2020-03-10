@@ -7,7 +7,18 @@ The purpose of this project is to provide a simple API for in-memory compilation
 Compiling Java classes is as simple as this:
 
 ```java
-// TBD add the code
+// compile code
+CompilationResult result = JCompiler.newInstance().
+compile(
+    "public class MyClass {\n"+
+    "  public static String hello() {\n"+
+	"    return \"hello\";\n"+
+	"  }\n"+
+	"}"
+).checkNoErrors();
+// load class and invoke static method
+Class<?> myClass = result.loadClasses().get("MyClass");    
+String msg = (String)myClass.getMethod("hello").invoke(null);          
 ```
 
 **Note**: This project needs the full JDK as runtime-dependency to work properly (the JRE does not contain the JavaCompiler API).

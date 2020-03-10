@@ -165,6 +165,21 @@ public class JCompilerTest {
             checkNoErrors(true).loadClasses().values().iterator().next();
 		List<?> res = (List<?>) helloClass.getMethod("hello").invoke(helloClass.newInstance());
 		Assert.assertEquals(1, res.size());
+    }
+    
+    @Test
+	public void miniTutorialForReadMe() throws Exception {
+        CompilationResult result = JCompiler.newInstance().
+        compile(
+            "public class MyClass {\n"+
+            "  public static String hello() {\n"+
+			"    return \"hello\";\n"+
+			"  }\n"+
+			"}"
+		).checkNoErrors();
+        Class<?> myClass = result.loadClasses().get("MyClass");    
+		String msg = (String)myClass.getMethod("hello").invoke(null);
+		Assert.assertEquals("hello", msg);
 	}
 
 	@Test
