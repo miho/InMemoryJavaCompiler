@@ -1,4 +1,4 @@
-#JCompiler#
+# JCompiler 
 [ ![Download](https://api.bintray.com/packages/miho/JCompiler/JCompiler/images/download.svg) ](https://bintray.com/miho/JCompiler/JCompiler/_latestVersion)
 
 The purpose of this project is to provide a simple API for in-memory compilation of Java code. While the JDK provides a full-blown API for this, in many cases a much simpler API is sufficient.
