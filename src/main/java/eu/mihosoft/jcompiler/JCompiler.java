@@ -59,8 +59,8 @@ public final class JCompiler {
 	 * 
 	 * @param parentClassLoader parent classloader to be used during compilation/class loading
 	 */
-	public void setParentClassLoader(ClassLoader parent) {
-		this.classLoader = new InMemoryClassLoader(parent);
+	public void setParentClassLoader(ClassLoader parentClassLoader) {
+		this.classLoader = new InMemoryClassLoader(parentClassLoader);
 	}
 
 	/**
