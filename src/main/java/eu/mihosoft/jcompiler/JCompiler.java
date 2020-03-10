@@ -115,7 +115,7 @@ public final class JCompiler {
 	 *                            diagnostics and for grouping compiled code
 	 * @param sourceCode          code to compile
 	 * @return this instance (for chaining invocation of this method)
-	 * @see {@link #compileAll()}
+	 * @see {@link #compileAll()} {@link #addSource(String sourceCode)}
 	 */
 	public JCompiler addSource(String compilationUnitName, String sourceCode) {
 		try {
@@ -131,7 +131,7 @@ public final class JCompiler {
 	 *
 	 * @param sourceCode          code to compile
 	 * @return this instance (for chaining invocation of this method)
-	 * @see {@link #compileAll()}
+	 * @see {@link #compileAll()} {@link #addSource()}
 	 */
 	public JCompiler addSource(String sourceCode) {
 		try {

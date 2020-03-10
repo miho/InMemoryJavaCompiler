@@ -3,11 +3,12 @@ package eu.mihosoft.jcompiler;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+
 /**
- *
+ * 
  * @author Michael Hoffer &lt;info@michaelhoffer.de&gt;
  */
-public final class LangUtils {
+/*pkg private*/ final class LangUtils {
 
     private LangUtils() {
         throw new AssertionError("Don't instantiate me!");
