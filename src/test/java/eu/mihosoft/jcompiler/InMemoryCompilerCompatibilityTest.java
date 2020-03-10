@@ -1,3 +1,20 @@
+/*
+ * Copyright 2020 Michael Hoffer <info@michaelhoffer.de>. All rights reserved.
+ *
+ * Code is based on abandoned project by Trung (https://github.com/trung/InMemoryJavaCompiler).
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package eu.mihosoft.jcompiler;
 
 import org.junit.Test;
@@ -11,6 +28,11 @@ import java.util.List;
 import java.util.Map;
 
 
+/**
+ * This replicates the original test cases but without the old implementation. Everything is accomplished
+ * with the new implementation. To ensure we stay compatile with the old API we test the InMemoryJavaCompiler
+ * wrapper that replicates the old interface with the old test cases.
+ */
 public class InMemoryCompilerCompatibilityTest {
 
 	@Rule
