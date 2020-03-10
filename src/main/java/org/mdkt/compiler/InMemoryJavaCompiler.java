@@ -26,6 +26,7 @@ import eu.mihosoft.jcompiler.JCompiler;
 
 /**
  * Compile Java sources in-memory. This API is kept in this project to stay backwards compatible.
+ * The implementation has been completely replaced by the new {@link JCompiler} API.
  */
 public final class InMemoryJavaCompiler {
 

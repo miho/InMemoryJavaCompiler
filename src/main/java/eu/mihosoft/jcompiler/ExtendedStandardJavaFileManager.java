@@ -30,6 +30,11 @@ import javax.tools.JavaFileManager;
 import javax.tools.JavaFileObject;
 
 /**
+ * Copyright 2015-2017 Trung (https://github.com/trung/InMemoryJavaCompiler). All rights reserved.
+ * 
+ * Code is under APL 2.0 just like the new API. This class has just been imrpoved but since 
+ * it is internal API we keep it for now.
+ * 
  * Created by trung on 5/3/15. Edited by turpid-monkey on 9/25/15, completed
  * support for multiple compile units.
  * 
