@@ -12,9 +12,9 @@ CompilationResult result = JCompiler.newInstance().
 compile(
     "public class MyClass {\n"+
     "  public static String hello() {\n"+
-	"    return \"hello\";\n"+
-	"  }\n"+
-	"}"
+    "    return \"hello\";\n"+
+    "  }\n"+
+    "}"
 ).checkNoErrors();
 // load class and invoke static method
 Class<?> myClass = result.loadClasses().get("MyClass");    
