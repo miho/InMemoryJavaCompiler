@@ -97,17 +97,13 @@ import java.util.regex.Pattern;
 
         StringBuilder result = new StringBuilder();
 
-        String[] lines = code.split("\n");
-
-        for (String l : lines) {
-
             boolean insideString = false;
             boolean insideChar = false;
             boolean insideEscape = false;
 
-            for (int i = 0; i < l.length(); i++) {
+            for (int i = 0; i < code.length(); i++) {
 
-                char ch = l.charAt(i);
+                char ch = code.charAt(i);
 
                 if (ch == '\\') {
                     insideEscape = !insideEscape;
@@ -135,12 +131,6 @@ import java.util.regex.Pattern;
                 }
             }
 
-            if (!insideString) {
-                result.append('\n');
-            }
-
-        }
-
         return result.toString();
     }
 
@@ -148,17 +138,13 @@ import java.util.regex.Pattern;
 
         StringBuilder result = new StringBuilder();
 
-        String[] lines = code.split("\n");
-
-        for (String l : lines) {
-
             boolean insideString = false;
             boolean insideChar = false;
             boolean insideEscape = false;
 
-            for (int i = 0; i < l.length(); i++) {
+            for (int i = 0; i < code.length(); i++) {
 
-                char ch = l.charAt(i);
+                char ch = code.charAt(i);
 
                 if (ch == '\\') {
                     insideEscape = !insideEscape;
@@ -186,16 +172,10 @@ import java.util.regex.Pattern;
                 }
             }
 
-            if (!insideString) {
-                result.append('\n');
-            }
-
-        }
-
         return result.toString();
     }
 
-        /**
+    /**
      * Removes comments, strings and chars from code, i.e.
      *
      * <pre>
