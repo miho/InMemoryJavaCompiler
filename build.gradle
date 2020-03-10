@@ -1,14 +1,58 @@
+import java.text.SimpleDateFormat
+
 plugins {
-    // Apply the java plugin to add support for Java
     id 'java'
+    id 'com.github.hierynomus.license' version '0.14.0'
+    id 'maven-publish'
+    id 'net.nemerosa.versioning' version '2.7.1'
+    id 'com.jfrog.bintray' version '1.8.4'
+    id 'com.github.ben-manes.versions' version '0.13.0'
 }
 
 repositories {
     jcenter()
+    mavenCentral()
+}
+
+wrapper {
+    gradleVersion = '6.2'
+}
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+
+tasks.withType(Javadoc) {
+    options.addStringOption('Xdoclint:none', '-quiet')
+    options.encoding = 'UTF-8'
 }
 
 dependencies {
-    // Use JUnit test framework
     testImplementation 'junit:junit:4.12'
 }
 
+jar {
+    manifest {
+        attributes('Automatic-Module-Name': 'eu.mihosoft.jcompiler')
+    }
+}
+
+license {
+    header = rootProject.file('config/HEADER')
+
+    strictCheck = true
+    ignoreFailures = false
+
+    mapping {
+        java   = 'SLASHSTAR_STYLE'
+        groovy = 'SLASHSTAR_STYLE'
+        gradle = 'SLASHSTAR_STYLE'
+        fxml   = 'XML_STYLE'
+        html   = 'XML_STYLE'
+    }
+
+    ext.yearCurrent  = new SimpleDateFormat("yyyy").format(new Date())
+    ext.years  = ('2020'.equals(ext.yearCurrent)?'':'2020-')+ext.yearCurrent
+    ext.author1 = 'Michael Hoffer <info@michaelhoffer.de>'
+
+}
