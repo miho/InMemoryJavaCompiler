@@ -41,11 +41,9 @@ public final class JCompiler {
 	 * Specifies a custom parent classloader to be used during compilation.
 	 * 
 	 * @param parentClassLoader parent classloader to be used during compilation/class loading
-	 * @return this instance (for chaining multiple configuration commands)
 	 */
-	public JCompiler useParentClassLoader(ClassLoader parent) {
+	public void setParentClassLoader(ClassLoader parent) {
 		this.classLoader = new InMemoryClassLoader(parent);
-		return this;
 	}
 
 	/**
@@ -123,7 +121,7 @@ public final class JCompiler {
 	 */
 	public JCompiler addSource(String compilationUnitName, String sourceCode) {
 		try {
-		sourceCodes.put(compilationUnitName, new CompilationUnitSource(compilationUnitName, sourceCode));
+			sourceCodes.put(compilationUnitName, new CompilationUnitSource(compilationUnitName, sourceCode));
 		} catch(URISyntaxException ex) {
 			throw new IllegalArgumentException("Invalid name specified", ex);
 		}
@@ -140,6 +138,13 @@ public final class JCompiler {
 	public JCompiler addSource(String sourceCode) {
 		try {
 			String compilationUnitName = LangUtils.getClassNameFromCode(sourceCode);
+
+			if(compilationUnitName.isEmpty()) {
+				throw new CompilationException(
+					"Cannot infer compilation unit name from compilation unit without type declaration\n\n"
+					+sourceCode);
+			}
+
 			sourceCodes.put(compilationUnitName, new CompilationUnitSource(compilationUnitName, sourceCode));
 		} catch(URISyntaxException ex) {
 			throw new IllegalArgumentException("Invalid name specified", ex);

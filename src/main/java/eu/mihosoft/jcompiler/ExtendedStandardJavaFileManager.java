@@ -54,7 +54,10 @@ import javax.tools.JavaFileObject;
 			if(codeList ==null) {
 				codeList = new ArrayList<>();
 				compiledCode.put(fName, codeList);
-				compiledUnits.add(new CompiledUnit(fName, codeList));
+				String code = sibling.getCharContent(true).toString();
+				compiledUnits.add(new CompiledUnit(fName, code,
+					codeList)
+				);
 			}
 			codeList.add(new CompiledClass(containedClass));
 			cl.addCode(containedClass);
@@ -75,6 +78,12 @@ import javax.tools.JavaFileObject;
 	 * @return the compiled code as list of compiled units
 	 */
 	List<CompiledUnit> getCompiledCode() {
+
+		// sort classes in units
+		for(CompiledUnit cU : this.compiledUnitsUnmodifiable) {
+			cU.initAndSortClassNames();
+		}
+
 		return this.compiledUnitsUnmodifiable;
 	}
 

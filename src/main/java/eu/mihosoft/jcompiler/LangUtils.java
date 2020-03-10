@@ -1,5 +1,7 @@
 package eu.mihosoft.jcompiler;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -222,12 +224,12 @@ import java.util.regex.Pattern;
     }
 
     /**
-     * Returns the class name of the first class defined in the given source
-     * code.
+     * Returns the class name of either the public class/interface or alternatively the first class/interface
+     * defined in the given source code.
      *
      * @param code code to analyze
-     * @return class name of the first class defined in the given source code or
-     * an empty string if no class has been defined
+     * @return class name of either the first public class/interface defined in the given source code or the first class/interface if no public type definition can be found or
+     * an empty string if no class/interface has been defined
      */
     public static String getClassNameFromCode(String code) {
 
@@ -239,13 +241,99 @@ import java.util.regex.Pattern;
 
         Matcher m = Patterns.CLASS_OR_INTERFACE_DEFINITION.matcher(code);
 
-        if (m.find()) {
+        String first = null;
+
+        String pkgName = getPackageNameFromCode(code);
+
+        while (m.find()) {
             String clsDef = m.group();
+
+            boolean publicCls = clsDef.contains("public");
 
             // remove modifiers and 'class' and 'interface' keywords
             result = clsDef.replaceFirst(
                 Patterns.CLASS_OR_INTERFACE_DEFINITION_WITHOUT_IDENTIFIER_STRING, "")
                     .split(" ")[0];
+
+            // add package name if present
+            result=(pkgName.isEmpty()?"":pkgName+".")+result;
+
+            // remember first type declaration in code 
+            if(first==null) {
+                first = result;
+            }
+
+            // return first occurance of public type declaration
+            if(publicCls) return result;
+        }
+
+        return first;
+    }
+
+    /**
+     * @return a list of all class or interface declarations in order of appearance
+     */
+    public static List<String> getClassNamesFromCode(String code) {
+
+        // remove comments, strings and chars from code
+        // -> remaining string can be safely matched with regex
+        code = removeCommentsAndStringsFromCode(code);
+
+        String pkgName = getPackageNameFromCode(code);
+
+        List<String> result = new ArrayList<>();
+
+        Matcher m = Patterns.CLASS_OR_INTERFACE_DEFINITION.matcher(code);
+
+        while (m.find()) {
+            String clsDef = m.group();
+
+            // remove modifiers and 'class' and 'interface' keywords
+            String clsName = clsDef.replaceFirst(
+                Patterns.CLASS_OR_INTERFACE_DEFINITION_WITHOUT_IDENTIFIER_STRING, "")
+                    .split(" ")[0];
+
+            result.add((pkgName.isEmpty()?"":pkgName+".")+clsName);
+        }
+
+        return result;
+    }
+
+     /**
+     * Get package name defined in the given source code.
+     *
+     * @param code code to analyze
+     * @return package name defined in the given source code or empty string if
+     * no package could be found
+     */
+    private static String getPackageNameFromCode(String code) {
+        String result = "";
+
+        code = removeCommentsAndStringsFromCode(code);
+
+        String[] lines = code.split("\\n");
+
+        // match example: ^package eu.mihosoft.vrl;$
+        Pattern p1 =
+                Pattern.compile(
+                "^\\s*package\\s+" + Patterns.PACKAGE_NAME_STRING + ";",
+                Pattern.DOTALL);
+
+        for (String l : lines) {
+
+            l = l.trim();
+
+            Matcher m1 = p1.matcher(l);
+
+            if (m1.find()) {
+
+                l = m1.group();
+
+                result =
+                        l.replaceFirst("^\\s*package\\s+", "").
+                        split(" ")[0].replace(";", "");
+                break;
+            }
         }
 
         return result;
@@ -319,7 +407,7 @@ import java.util.regex.Pattern;
          */
         public static final String CLASS_OR_INTERFACE_DEFINITION_WITHOUT_IDENTIFIER_STRING =
                 "(\\s+|^|(\\s+|^)public\\s+|(\\s+|^)protected\\s+|(\\s+|^)"
-                + "private\\s+)(static\\s+|abstract\\s+|final\\s+|)(class|interface)\\s+";
+                + "private\\s+)(static\\s+|abstract\\s+|final\\s+|)(class|interface|enum)\\s+";
         /**
          * Regular expression to match class definition.
          */
