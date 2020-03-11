@@ -283,8 +283,6 @@ import java.util.regex.Pattern;
         // -> remaining string can be safely matched with regex
         code = removeTypeBodyContent(code);
 
-        System.out.println("!!! " + code);
-
         String result = "";
 
         Matcher m = Patterns.CLASS_OR_INTERFACE_DEFINITION.matcher(code);

@@ -44,14 +44,14 @@ public final class CompiledUnit {
     }
 
     /**
-     * @return the compiled classes contained in this unit (order from source code is preserved)
+     * @return the compiled classes contained in this unit (order from source code is preserved for outer classes)
      */
     public List<CompiledClass> getClasses() {
         return classesUnmodifiable;
     }
     
     /**
-     * Sorts the classes according to their appearance in code.
+     * Sorts the classes according to their appearance in code (works for outer classes).
      */
     /*pkg private*/ void initAndSortClassNames() {
 
