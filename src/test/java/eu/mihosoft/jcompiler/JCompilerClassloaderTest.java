@@ -31,7 +31,10 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
-
+/**
+ * Test for verifying classloader behavior (parent url classloader).
+ * Based on Repro sketch by @treimers.
+ */
 public class JCompilerClassloaderTest {
     private static final String CLASS_NAME = "eu.mihosoft.vmf.core.Container";
     private static final String VMF_JAR = "build/vmf-0.2.7.14.jar";
