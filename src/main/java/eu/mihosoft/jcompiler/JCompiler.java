@@ -17,7 +17,11 @@
  */
 package eu.mihosoft.jcompiler;
 
+import java.io.File;
+import java.io.IOException;
 import java.net.URISyntaxException;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.*;
 import javax.tools.*;
 
@@ -59,7 +63,7 @@ public final class JCompiler {
 	 * 
 	 * @param parentClassLoader parent classloader to be used during compilation/class loading
 	 */
-	public void setParentClassLoader(ClassLoader parentClassLoader) {
+	public void setParentClassLoader(URLClassLoader parentClassLoader) {
 		this.classLoader = new InMemoryClassLoader(parentClassLoader);
 	}
 
@@ -108,8 +112,33 @@ public final class JCompiler {
 			}
 		}
 
+
 		DiagnosticCollector<JavaFileObject> collector = new DiagnosticCollector<>();
-		ExtendedStandardJavaFileManager fileManager = new ExtendedStandardJavaFileManager(javac.getStandardFileManager(null, null, null), classLoader);
+
+		final StandardJavaFileManager fileManagerStandard = javac.getStandardFileManager(null, null, null);
+
+		// add urls from url classloader to classpath
+		if( classLoader.getParent() instanceof URLClassLoader) {
+			URLClassLoader urlClassLoader = (URLClassLoader) classLoader.getParent();
+			List<File> paths = new ArrayList<>();
+
+			Iterable<? extends File> files = fileManagerStandard.getLocation(StandardLocation.CLASS_PATH);
+			files.forEach(f -> paths.add(f));
+
+			for (URL url : urlClassLoader.getURLs()) {
+				File file = new File(url.getFile());
+				paths.add(file);
+			}
+
+			try {
+				fileManagerStandard.setLocation(StandardLocation.CLASS_PATH, paths);
+			} catch (IOException e) {
+				throw new RuntimeException("Error while loading urls from classloader", e);
+			}
+		}
+
+		// perform the compilation
+		ExtendedStandardJavaFileManager fileManager = new ExtendedStandardJavaFileManager(fileManagerStandard, classLoader);
 		JavaCompiler.CompilationTask task = javac.getTask(null, fileManager, collector, options, null, compilationUnits);
 		boolean result = task.call();
 
@@ -158,7 +187,7 @@ public final class JCompiler {
 	 *
 	 * @param sourceCode          code to compile
 	 * @return this instance (for chaining invocation of this method)
-	 * @see {@link #compileAll()} {@link #addSource()}
+	 * @see {@link #compileAll()}, {@link #addSource(String compilationUnitName, String sourceCode)}
 	 */
 	public JCompiler addSource(String sourceCode) {
 		try {

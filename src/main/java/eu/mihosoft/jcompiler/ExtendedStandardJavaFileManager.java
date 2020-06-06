@@ -17,17 +17,13 @@
  */
 package eu.mihosoft.jcompiler;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import io.github.classgraph.ClassGraph;
 
-import javax.tools.FileObject;
-import javax.tools.ForwardingJavaFileManager;
-import javax.tools.JavaFileManager;
-import javax.tools.JavaFileObject;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.util.*;
+
+import javax.tools.*;
 
 /**
  * Copyright 2015-2017 Trung (https://github.com/trung/InMemoryJavaCompiler). All rights reserved.
@@ -68,6 +64,7 @@ import javax.tools.JavaFileObject;
 			JavaFileObject.Kind kind, FileObject sibling) throws IOException {
 
 		try {
+
 			CompiledClassFile containedClass = new CompiledClassFile(cl, className);
 
 			String fName = sibling.getName();
@@ -107,6 +104,26 @@ import javax.tools.JavaFileObject;
 		}
 
 		return this.compiledUnitsUnmodifiable;
+	}
+
+	@Override
+	public String inferBinaryName(Location location, JavaFileObject file) {
+		if (file instanceof ClassLoaderClassFile) {
+			return ((ClassLoaderClassFile)file).getClassName();
+		} else {
+			return super.inferBinaryName(location, file);
+		}
+	}
+
+	@Override
+	public Iterable<JavaFileObject> list(Location location, String packageName, Set<JavaFileObject.Kind> kinds, boolean recurse) throws IOException {
+
+		Iterable<JavaFileObject> superResults = super.list(location, packageName, kinds, recurse);
+
+		// NOTE we might want to scan classpath via classgraph
+
+		return superResults;
+
 	}
 
 }

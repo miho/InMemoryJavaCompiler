@@ -17,6 +17,7 @@
  */
 package org.mdkt.compiler;
 
+import java.net.URLClassLoader;
 import java.util.*;
 
 import eu.mihosoft.jcompiler.CompilationResult;
@@ -41,7 +42,7 @@ public final class InMemoryJavaCompiler {
         this.compiler = JCompiler.newInstance();
 	}
 
-	public InMemoryJavaCompiler useParentClassLoader(ClassLoader parent) {
+	public InMemoryJavaCompiler useParentClassLoader(URLClassLoader parent) {
         this.compiler.setParentClassLoader(parent);
 		return this;
 	}

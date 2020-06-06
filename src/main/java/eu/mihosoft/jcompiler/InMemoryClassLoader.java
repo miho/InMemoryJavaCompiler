@@ -47,6 +47,7 @@ import java.util.Map;
 
 	@Override
 	protected Class<?> findClass(String name) throws ClassNotFoundException {
+
 		CompiledClassFile cc = customCompiledCode.get(name);
 
 		if (cc == null) {
@@ -57,5 +58,4 @@ import java.util.Map;
 		}
 		
 	}
-
 }
