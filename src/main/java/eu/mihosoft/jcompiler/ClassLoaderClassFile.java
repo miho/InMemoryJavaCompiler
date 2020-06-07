@@ -27,7 +27,9 @@ import java.net.URISyntaxException;
 
 /**
  * A class file from class loader.
+ * @deprecated WIP
  */
+@Deprecated
 /*pkg private*/ final class ClassLoaderClassFile extends SimpleJavaFileObject {
     private final ClassLoader loader;
     private final ByteArrayOutputStream baos = new ByteArrayOutputStream();
