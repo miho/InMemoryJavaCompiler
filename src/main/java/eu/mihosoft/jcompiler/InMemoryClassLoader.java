@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Michael Hoffer <info@michaelhoffer.de>. All rights reserved.
+ * Copyright 2020-2022 Michael Hoffer <info@michaelhoffer.de>. All rights reserved.
  *
  * Code is based on abandoned project by Trung (https://github.com/trung/InMemoryJavaCompiler).
  *
