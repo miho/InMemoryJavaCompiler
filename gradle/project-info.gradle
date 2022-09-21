@@ -1,25 +1,25 @@
 // -----------------------------------------------------------------------------
 // publishing information
 // -----------------------------------------------------------------------------
-ext.publishing.artifactId =  project.name.toLowerCase()
-ext.publishing.groupId    =  'eu.mihosoft.jcompiler'
-ext.publishing.versionId  =  '0.5-SNAPSHOT'
+ext.publishingInfo.artifactId =  project.name.toLowerCase()
+ext.publishingInfo.groupId    =  'eu.mihosoft.jcompiler'
+ext.publishingInfo.versionId  =  '0.5.0'
 
-ext.publishing.developerName         = 'Michael Hoffer'
-ext.publishing.developerAlias        = 'miho'
-ext.publishing.developerEmail        = 'info@michaelhoffer.de'
-ext.publishing.inceptionYear         = '2020'
+ext.publishingInfo.developerName         = 'Michael Hoffer'
+ext.publishingInfo.developerAlias        = 'miho'
+ext.publishingInfo.developerEmail        = 'info@michaelhoffer.de'
+ext.publishingInfo.inceptionYear         = '2020'
 
-ext.publishing.bintray.repo          = 'JCompiler'
-ext.publishing.bintray.userOrg       = 'miho'
-ext.publishing.bintray.name          = project.name
+ext.publishingInfo.desc                  = 'Simple and efficient API to compile Java code at runtime (in-memory). Based on InMemoryCompiler.'
+ext.publishingInfo.license               = 'Apache-2.0'
+ext.publishingInfo.licenseUrl            = 'https://github.com/miho/JCompiler/blob/master/LICENSE'
+ext.publishingInfo.labels                = ['compiler', 'java', 'meta programming', 'VMF', "VRL", "jcompiler"]
+ext.publishingInfo.websiteUrl            = 'https://github.com/miho/JCompiler'
+ext.publishingInfo.issueTrackerUrl       = 'https://github.com/miho/JCompiler/issues'
+ext.publishingInfo.vcsUrl                = 'https://github.com/miho/JCompiler.git'
 
-ext.publishing.desc                  = 'Simple and efficient API to compile Java code at runtime (in-memory). Based on InMemoryCompiler.'
-ext.publishing.license               = 'Apache-2.0'
-ext.publishing.licenseUrl            = 'https://github.com/miho/JCompiler/blob/master/LICENSE'
-ext.publishing.labels                = ['compiler', 'java', 'meta programming', 'VMF', "VRL", "jcompiler"]
-ext.publishing.websiteUrl            = 'https://github.com/miho/JCompiler'
-ext.publishing.issueTrackerUrl       = 'https://github.com/miho/JCompiler/issues'
-ext.publishing.vcsUrl                = 'https://github.com/miho/JCompiler.git'
+ext.publishingInfo.gitHubMavenRepo       = "https://maven.pkg.github.com/miho/JCompiler"
 
-ext.publishing.pomName               =  ext.publishing.artifactId
+ext.publishingInfo.pomName               =  ext.publishingInfo.artifactId
+
+

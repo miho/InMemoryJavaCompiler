@@ -2,12 +2,10 @@ import java.text.SimpleDateFormat
 
 plugins {
     id 'java'
-    id 'com.github.hierynomus.license' version '0.14.0'
+    id 'com.github.hierynomus.license' version '0.16.1'
     id 'maven-publish'
-    id 'net.nemerosa.versioning' version '2.7.1'
-    id 'com.jfrog.bintray' version '1.8.4'
-    id 'com.github.ben-manes.versions' version '0.13.0'
-    id "de.undercouch.download" version "4.0.4"
+    id 'net.nemerosa.versioning' version '3.0.0'
+    id 'com.github.ben-manes.versions' version '0.42.0'
 }
 
 apply from: 'gradle/publishing.gradle'
@@ -18,29 +16,25 @@ repositories {
 }
 
 wrapper {
-    gradleVersion = '6.4'
+    gradleVersion = '7.5.1'
 }
 
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
-[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+sourceCompatibility = 11
+targetCompatibility = 11
+tasks.withType(JavaCompile) {
+    options.release.set(11)
+    options*.encoding = 'UTF-8'
+}
 
 tasks.withType(Javadoc) {
     options.addStringOption('Xdoclint:none', '-quiet')
     options.encoding = 'UTF-8'
 }
 
-task downloadVMF(type: Download) {
-    src 'https://dl.bintray.com/miho/VMF/eu/mihosoft/vmf/vmf/0.2.7.14/vmf-0.2.7.14.jar'
-    dest buildDir
-    overwrite false
-}
-
-test.dependsOn+="downloadVMF"
 
 dependencies {
-    testImplementation 'junit:junit:4.12'
-    compile group: 'io.github.classgraph', name: 'classgraph', version: '4.6.32'
+    testImplementation 'junit:junit:4.13.2'
+    implementation group: 'io.github.classgraph', name: 'classgraph', version: '4.8.149'
 }
 
 jar {

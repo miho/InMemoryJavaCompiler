@@ -1,5 +1,6 @@
 # JCompiler 
-[ ![Download](https://api.bintray.com/packages/miho/JCompiler/JCompiler/images/download.svg) ](https://bintray.com/miho/JCompiler/JCompiler/_latestVersion) [![javadoc](https://javadoc.io/badge2/eu.mihosoft.jcompiler/jcompiler/javadoc.svg)](https://javadoc.io/doc/eu.mihosoft.jcompiler/jcompiler) ![Java CI with Gradle](https://github.com/miho/JCompiler/workflows/Java%20CI%20with%20Gradle/badge.svg)
+[![javadoc](https://javadoc.io/badge2/eu.mihosoft.jcompiler/jcompiler/javadoc.svg)](https://javadoc.io/doc/eu.mihosoft.jcompiler/jcompiler)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/eu.mihosoft.jcompiler/jcompiler/badge.svg)](https://maven-badges.herokuapp.com/maven-central/eu.mihosoft.jcompiler/jcompiler)
 
 The purpose of this project is to provide a simple API for in-memory compilation of Java code. While the JDK provides a full-blown API for this, in many cases a much simpler API is sufficient.
 
@@ -30,7 +31,7 @@ String msg = (String)myClass.getMethod("hello").invoke(null);
 
 ### 1. Dependencies
 
-- JDK >= 8 (tested with JDK 11 and 13)
+- JDK >= 11
 - Internet Connection (other dependencies will be downloaded automatically)
 - Optional: IDE with [Gradle](http://www.gradle.org/) support
 
@@ -60,3 +61,7 @@ task to build the project.
     cd Path\To\JCompiler
     gradlew assemble
 
+##### Windows (PowerShell)
+
+    cd Path\To\JCompiler
+    .\gradlew assemble
