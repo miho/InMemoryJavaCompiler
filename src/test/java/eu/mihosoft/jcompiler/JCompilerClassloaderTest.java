@@ -37,7 +37,7 @@ import java.util.Set;
  */
 public class JCompilerClassloaderTest {
     private static final String CLASS_NAME = "eu.mihosoft.vmf.core.Container";
-    private static final String VMF_JAR = "build/vmf-0.2.7.14.jar";
+    private static final String VMF_JAR = "build/vmf-0.2.8.6.jar";
 
     @Test
     public void testClassloader() throws MalformedURLException {

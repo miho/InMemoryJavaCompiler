@@ -6,6 +6,7 @@ plugins {
     id 'maven-publish'
     id 'net.nemerosa.versioning' version '3.0.0'
     id 'com.github.ben-manes.versions' version '0.42.0'
+    id 'de.undercouch.download' version '4.1.2'
 }
 
 apply from: 'gradle/publishing.gradle'
@@ -30,6 +31,14 @@ tasks.withType(Javadoc) {
     options.addStringOption('Xdoclint:none', '-quiet')
     options.encoding = 'UTF-8'
 }
+
+task downloadVMF(type: Download) {
+    src 'https://repo1.maven.org/maven2/eu/mihosoft/vmf/vmf/0.2.8.6/vmf-0.2.8.6.jar'
+    dest buildDir
+    overwrite false
+}
+
+test.dependsOn+="downloadVMF"
 
 
 dependencies {
